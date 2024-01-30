@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Kaushan+Script&family=Lato&family=Oswald:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <title>BMI-Calc2</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">BMI Calculator</h1>
+      <div class="weight-cover">
+        <label for="weight">Weight</label>
+        <br />
+        <input
+          type="number"
+          id="weight"
+          class="input-box"
+          placeholder="Kilogram"
+        />
+      </div>
+      <div class="height-cover">
+        <label for="height">Height</label>
+        <br />
+        <input
+          type="number"
+          id="height"
+          class="input-box"
+          placeholder="Centimeter"
+        />
+      </div>
+      <div class="result-shower">
+        <div class="bmi">BMI</div>
+        <p class="message">Body health <span class="bmi-category"></span></p>
+      </div>
+    </div>
+
+    <script>
+      const weightElem = document.getElementById("weight");
+      const heightElem = document.getElementById("height");
+      const bmiElem = document.querySelector(".bmi");
+      const messageElem = document.querySelector(".message");
+      const bmiCategoryElem = document.querySelector(".bmi-category");
+      const container = document.querySelector(".container");
+
+      document.addEventListener("contextmenu", function (event) {
+        event.preventDefault();
+      });
+
+      let bmiMetric;
+      function calcBMI() {
+        let weight = weightElem.value;
+        let height = heightElem.value;
+        let bmi = weight / (height * height);
+        bmiMetric = (bmi * 10000).toFixed(1);
+      }
+
+      function checkCategory(value) {
+        if (isFinite(value)) {
+          if (value >= 30.0) {
+            bmiCategoryElem.style.color = "#b00";
+            bmiElem.style.color = "#b00";
+            bmiElem.style.borderColor = "#b00";
+            return `Obese`;
+          } else if (value >= 25.0 && value <= 29.9) {
+            bmiCategoryElem.style.color = "#8a4f02";
+            bmiElem.style.color = "#8a4f02";
+            bmiElem.style.borderColor = "#8a4f02";
+            return `Overweight`;
+          } else if (value >= 18.5 && value <= 24.9) {
+            bmiCategoryElem.style.color = "#2ca1bc";
+            bmiElem.style.color = "#2ca1bc";
+            bmiElem.style.borderColor = "#2ca1bc";
+            return `Normal`;
+          } else if (value <= 18.4) {
+            bmiCategoryElem.style.color = "#625301";
+            bmiElem.style.color = "#625301";
+            bmiElem.style.borderColor = "#625301";
+            return `Underweight`;
+          }
+        } else {
+          bmiCategoryElem.style.color = "black";
+          return ``;
+        }
+      }
+
+      function updateUI() {
+        calcBMI();
+        if (isFinite(bmiMetric)) {
+          bmiElem.innerHTML = bmiMetric;
+        }
+        bmiCategoryElem.innerHTML = checkCategory(bmiMetric);
+      }
+
+      container.addEventListener("input", updateUI);
+    </script>
+  </body>
+</html>
